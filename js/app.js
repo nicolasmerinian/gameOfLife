@@ -1,8 +1,8 @@
-var Gol = function(width, height) {
+var Gol = function(size) {
 	var container = document.getElementById('container');
 	this.canvas = document.createElement('canvas');
-	this.canvas.setAttribute('width', width);
-	this.canvas.setAttribute('height', height);
+	this.canvas.setAttribute('width', size);
+	this.canvas.setAttribute('height', size);
 	this.canvas.style.border = '1px solid #000';
 	this.canvas.style.position = 'absolute';
 	this.canvas.style.top = '0';
@@ -15,4 +15,4 @@ var Gol = function(width, height) {
 	this.height = this.canvas.height;
 }
 
-new Gol(200, 200);
+new Gol(200);
