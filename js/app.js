@@ -102,20 +102,7 @@ Gol.prototype.drawCell = function drawCell(x, y, color) {
 Gol.prototype.calc = function calc() {
 	var neightboursNumber;
 
-	this.cellsOld = [];
-	var subArray;
-	for (var j = 0; j < this.height / this.cellSize; j++) {
-		subArray = [];
-		for (var i = 0; i < this.width / this.cellSize; i++) {
-			subArray.push(0);
-		}
-		this.cellsOld.push(subArray);
-	}
-	for (var j = 0; j < this.cellsOld.length; j++) {
-		for (var i = 0; i < this.cellsOld[j].length; i++) {
-			this.cellsOld[j][i] = this.cells[j][i];
-		}
-	}
+	this.prepareData();
 	
 	for (var j = 0; j < this.cellsOld.length; j++) {
 		for (var i = 0; i < this.cellsOld[j].length; i++) {
@@ -158,6 +145,23 @@ Gol.prototype.calc = function calc() {
 						break;
 				}
 			}
+		}
+	}
+}
+
+Gol.prototype.prepareData = function prepareData() {
+	this.cellsOld = [];
+	var subArray;
+	for (var j = 0; j < this.height / this.cellSize; j++) {
+		subArray = [];
+		for (var i = 0; i < this.width / this.cellSize; i++) {
+			subArray.push(0);
+		}
+		this.cellsOld.push(subArray);
+	}
+	for (var j = 0; j < this.cellsOld.length; j++) {
+		for (var i = 0; i < this.cellsOld[j].length; i++) {
+			this.cellsOld[j][i] = this.cells[j][i];
 		}
 	}
 }
