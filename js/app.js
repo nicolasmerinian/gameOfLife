@@ -15,4 +15,10 @@ var Gol = function(size) {
 	this.height = this.canvas.height;
 }
 
-new Gol(200);
+Gol.prototype.draw = function draw() {
+	this.ctx.fillStyle = 'red';
+	this.ctx.fillRect(0, 0, this.width, this.height);
+}
+
+var gol = new Gol(200);
+gol.draw();
