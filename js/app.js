@@ -1,8 +1,8 @@
-var Gol = function(rowAndColNumber, cellSize, i) {
+var Gol = function(rowAndColNumber, cellSize, i, drawType) {
 	this.rowAndColNumber = rowAndColNumber;
 	this.cellSize = cellSize;
 	this.interval = i;
-	this.cellSize = cellSize;
+	this.drawType = drawType;
 	this.createCanvas();
 	this.ctx = this.canvas.getContext('2d');
 	this.width = this.canvas.width;
@@ -65,7 +65,8 @@ Gol.prototype.run = function run() {
 
 Gol.prototype.draw = function draw() {
 	this.clear();
-	this.drawCells();
+	if (this.drawType === 'tile') this.drawCells();
+	else if (this.drawType === 'iso') this.drawIsoCells();
 	this.drawBoard();
 }
 
@@ -213,7 +214,7 @@ Gol.prototype.isAlive = function isAlive(i, j) {
 }
 
 
-var gol = new Gol(40, 10, 100);
+var gol = new Gol(40, 10, 100, "tile"); // tile, iso
 
 
 
