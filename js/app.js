@@ -17,7 +17,12 @@ var Gol = function(size, cellSize) {
 }
 
 Gol.prototype.draw = function draw() {
+	this.clear();
 	this.drawBoard();
+}
+
+Gol.prototype.clear = function draw() {
+	this.ctx.clearRect(0, 0, this.width, this.height);
 }
 
 Gol.prototype.drawBoard = function drawBoard() {
