@@ -1,8 +1,12 @@
-var Gol = function(size, cellSize) {
+var Gol = function(rowAndColNumber, cellSize, i) {
+	this.rowAndColNumber = rowAndColNumber;
+	this.cellSize = cellSize;
+	this.interval = i;
+	
 	var container = document.getElementById('container');
 	this.canvas = document.createElement('canvas');
-	this.canvas.setAttribute('width', size);
-	this.canvas.setAttribute('height', size);
+	this.canvas.setAttribute('width', this.rowAndColNumber * this.cellSize);
+	this.canvas.setAttribute('height', this.rowAndColNumber * this.cellSize);
 	this.canvas.style.border = '1px solid #000';
 	this.canvas.style.position = 'absolute';
 	this.canvas.style.top = '0';
@@ -227,7 +231,7 @@ Gol.prototype.isAlive = function isAlive(i, j) {
 }
 
 
-var gol = new Gol(200, 40);
+var gol = new Gol(20, 10, 250);
 
 
 
