@@ -99,6 +99,130 @@ Gol.prototype.drawCell = function drawCell(x, y, color) {
 	this.ctx.fillRect(cx, cy, this.cellSize, this.cellSize);
 }
 
+Gol.prototype.calc = function calc() {
+	var neightboursNumber;
+
+	this.cellsOld = [];
+	var subArray;
+	for (var j = 0; j < this.height / this.cellSize; j++) {
+		subArray = [];
+		for (var i = 0; i < this.width / this.cellSize; i++) {
+			subArray.push(0);
+		}
+		this.cellsOld.push(subArray);
+	}
+	for (var j = 0; j < this.cellsOld.length; j++) {
+		for (var i = 0; i < this.cellsOld[j].length; i++) {
+			this.cellsOld[j][i] = this.cells[j][i];
+		}
+	}
+	
+	for (var j = 0; j < this.cellsOld.length; j++) {
+		for (var i = 0; i < this.cellsOld[j].length; i++) {
+			neightboursNumber = this.getNeighboursNumber(j, i);
+			if (!this.isAlive(i, j)) {
+				switch(neightboursNumber) {
+					// case 0:
+					// case 1:
+					// case 2:
+						// this.cells[j][i] = this.cellState.DEAD;
+						// break;
+					case 3:
+						this.cells[j][i] = this.cellState.ALIVE;
+						break;
+					// case 4:
+					// case 5:
+					// case 6:
+					// case 7:
+					// case 8:
+						// this.cells[j][i] = this.cellState.DEAD;
+						// break;
+				}
+			}
+			else {
+				switch(neightboursNumber) {
+					case 0:
+					case 1:
+						// this.cells[j][i] = this.cellState.DEAD;
+						// break;
+					// case 2:
+					// case 3:
+						// this.cells[j][i] = this.cellState.ALIVE;
+						// break;
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+						this.cells[j][i] = this.cellState.DEAD;
+						break;
+				}
+			}
+		}
+	}
+}
+
+Gol.prototype.getNeighboursNumber = function getNeighboursNumber(j, i) {
+	var numberOfNeightbours = 0;
+	var neightbourValue;
+	// Top left
+	if (i - 1 >= 0 && j - 1 >= 0) {
+		if (this.isAlive(i - 1, j - 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Top
+	if (j - 1 >= 0) {
+		if (this.isAlive(i, j - 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Top right
+	if (i + 1 < this.width / this.cellSize && j - 1 >= 0) {
+		if (this.isAlive(i + 1, j - 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Center left
+	if (i - 1 >= 0) {
+		if (this.isAlive(i - 1, j)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// No center
+	// Center right
+	if (i + 1 <= this.width / this.cellSize) {
+		if (this.isAlive(i + 1, j)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Bottom left
+	if (i - 1 >= 0 && j + 1 < this.height / this.cellSize) {
+		if (this.isAlive(i - 1, j + 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Bottom
+	if (j + 1 < this.height / this.cellSize) {
+		if (this.isAlive(i, j + 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	// Bottom right
+	if (i + 1 <= this.width / this.cellSize && j + 1 < this.height / this.cellSize) {
+		if (this.isAlive(i + 1, j + 1)) {
+			numberOfNeightbours += 1;
+		}
+	}
+	return numberOfNeightbours;
+}
+
+Gol.prototype.isAlive = function isAlive(i, j) {
+	var cellValue = this.cellsOld[j][i];
+	return cellValue === this.cellState.BIRTH || cellValue === this.cellState.ALIVE;
+}
+
+
 var gol = new Gol(200, 40);
 
 
