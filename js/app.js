@@ -18,13 +18,42 @@ var Gol = function(size, cellSize) {
 }
 
 Gol.prototype.init = function init() {
-	this.cells = [
-		[0,0,0,0,0],
-		[0,0,0,0,0],
-		[0,3,3,0,0],
-		[0,0,3,0,0],
-		[0,0,0,0,0]
-	];
+	this.timer = null;
+	this.cells = null;
+	this.cellsOld = null;
+	this.steps = 0;
+	this.cellColor = ['#FFF', '#AAA', '#AEE489', '#22BB38'];
+	this.cellState = { 'DEAD': 0, 'DYING': 1, 'BIRTH': 2, 'ALIVE': 3 };
+	this.initCells();
+	this.run();
+}
+
+Gol.prototype.initCells = function initCells() {
+	this.cells = [];
+	var subArray;
+	for (var j = 0; j < this.height / this.cellSize; j++) {
+		subArray = [];
+		for (var i = 0; i < this.width / this.cellSize; i++) {
+			subArray.push(0);
+		}
+		this.cells.push(subArray);
+	}
+	var rand;
+	for (var i = 0; i < this.cells.length; i++) {
+		for (var j = 0; j < this.cells[i].length; j++) {
+			rand = Math.random();
+			rand < 0.5 ? this.cells[i][j] = 0 : this.cells[i][j] = 3;
+		}
+	}
+}
+Gol.prototype.run = function run() {
+	var self = this;
+	this.draw();
+	this.calc();
+	this.steps += 1;
+	this.timer = setTimeout(function() {
+		self.run();
+	}, this.interval);
 }
 
 Gol.prototype.draw = function draw() {
@@ -58,22 +87,37 @@ Gol.prototype.drawCells = function drawCells() {
 	for (var j = 0; j < this.cells.length; j++) {
 		for (var i = 0; i < this.cells[j].length; i++) {
 			currentCellValue = this.cells[j][i];
-			this.drawCell(i, j, currentCellValue);
+			this.drawCell(i, j, this.cellColor[currentCellValue]);
 		}
 	}
 }
 
-Gol.prototype.drawCell = function drawCell(x, y, cellValue) {
+Gol.prototype.drawCell = function drawCell(x, y, color) {
 	var cx = x * this.cellSize;
 	var cy = y * this.cellSize;
-	if (cellValue === 3) {
-		this.ctx.fillStyle = 'red';
-	}
-	else {
-		this.ctx.fillStyle = 'white';
-	}
+	this.ctx.fillStyle = color;
 	this.ctx.fillRect(cx, cy, this.cellSize, this.cellSize);
 }
 
 var gol = new Gol(200, 40);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 gol.draw();
