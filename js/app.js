@@ -29,7 +29,14 @@ Gol.prototype.init = function init() {
 	this.cellsOld = null;
 	this.steps = 0;
 	this.cellColor = ['#FFF', '#AAA', '#AEE489', '#22BB38'];
+	this.cellIsoColor = [
+		['#F5F5F5', '#CCCCCC', '#AAAAAA'],
+		['#999999', '#666666', '#333333'],
+		['#BBEE00', '#558800', '#225500'],
+		['#00CC00', '#008800', '#005500'],
+	];
 	this.cellState = { 'DEAD': 0, 'DYING': 1, 'BIRTH': 2, 'ALIVE': 3 };
+	this.isoSize = { w: 20, d: 20, h: 15, c: 20 };
 	this.initCells();
 	this.run();
 }
@@ -65,9 +72,11 @@ Gol.prototype.run = function run() {
 
 Gol.prototype.draw = function draw() {
 	this.clear();
-	if (this.drawType === 'tile') this.drawCells();
+	if (this.drawType === 'tile') {
+		this.drawCells();
+		this.drawBoard();
+	}
 	else if (this.drawType === 'iso') this.drawIsoCells();
-	this.drawBoard();
 }
 
 Gol.prototype.clear = function clear() {
@@ -213,8 +222,84 @@ Gol.prototype.isAlive = function isAlive(i, j) {
 	return cellValue === this.cellState.BIRTH || cellValue === this.cellState.ALIVE;
 }
 
+Gol.prototype.drawIsoCells = function drawIsoCells() {
+	var currentCellValue;
+	for (var j = 0; j < this.cells.length; j++) {
+		for (var i = 0; i < this.cells[j].length; i++) {
+			currentCellValue = this.cells[j][i];
+			this.drawIsoCell(i, j, this.cellIsoColor[currentCellValue]);
+		}
+	}
+}
 
-var gol = new Gol(40, 10, 100, "tile"); // tile, iso
+Gol.prototype.drawIsoCell = function drawIsoCell(x, y, colors) {
+	this.drawIsoTile(x + 15, y - 5, 0, this.isoSize.w, this.isoSize.d, this.isoSize.h, colors);
+}
+
+Gol.prototype.drawIsoTile = function drawIsoTile(px,  py, pz, h1, h2 , z, colors) {
+	var w = h1;
+	var h = z;
+	var w1 = h1 * w / h;
+	var w2 = h2 * w / h;
+	var x = px + (w2 * px) - (py * w2) + w2;
+	var y = px * (h1 + 1) + (py * h1) - (h1 * 4) - (pz * z);
+	var color1 = colors[0];
+	var color2 = colors[1];
+	var color3 = colors[2];
+	
+	/*
+		   5-----6
+		 /     /   |
+		1-(8)2-7
+		|     |   /
+		4-----3
+	*/
+	var p1 = { x: x, y: y + h1 };
+	var p2 = { x: x + w2, y: y + h1 + h1 };
+	var p3 = { x: x + w2, y: y + h1 + h2 + z };
+	var p4 = { x: x, y: y + h1 + z };
+	var p5 = { x: x + w2, y: y + h1 - h2 };
+	var p6 = { x: x + w2 + w1, y: y + h2 };
+	var p7 = { x: x + w2 + w1, y: y + h2 + z };
+	var p8 = { x: x + w1, y: y };
+	
+	
+	this.ctx.beginPath();
+	this.ctx.moveTo(p1.x, p1.y);
+	this.ctx.lineTo(p8.x, p8.y);
+	this.ctx.lineTo(p6.x, p6.y);
+	this.ctx.lineTo(p2.x, p2.y);
+	this.ctx.closePath();
+	this.ctx.fillStyle = color1;
+	this.ctx.strokeStyle = color1;
+	this.ctx.fill();	
+	this.ctx.stroke();
+	
+	this.ctx.strokeStyle = '#000';
+	this.ctx.beginPath();
+	this.ctx.moveTo(p1.x, p1.y);
+	this.ctx.lineTo(p2.x, p2.y);
+	this.ctx.lineTo(p3.x, p3.y);
+	this.ctx.lineTo(p4.x, p4.y);
+	this.ctx.closePath();
+	this.ctx.fillStyle = color2;
+	this.ctx.strokeStyle = color2;
+	this.ctx.fill();
+	this.ctx.stroke();
+
+	this.ctx.beginPath();
+	this.ctx.moveTo(p2.x, p2.y);
+	this.ctx.lineTo(p6.x, p6.y);
+	this.ctx.lineTo(p7.x, p7.y);
+	this.ctx.lineTo(p3.x, p3.y);
+	this.ctx.closePath();
+	this.ctx.fillStyle = color3;
+	this.ctx.strokeStyle = color3;
+	this.ctx.fill();
+	this.ctx.stroke();
+}
+
+var gol = new Gol(20, 100, 100, "iso"); // tile, iso
 
 
 
