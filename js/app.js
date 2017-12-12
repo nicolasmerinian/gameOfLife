@@ -213,7 +213,7 @@ Gol.prototype.isAlive = function isAlive(i, j) {
 }
 
 
-var gol = new Gol(20, 10, 250);
+var gol = new Gol(40, 10, 100);
 
 
 
