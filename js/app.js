@@ -114,42 +114,21 @@ Gol.prototype.calc = function calc() {
 	for (var j = 0; j < this.cellsOld.length; j++) {
 		for (var i = 0; i < this.cellsOld[j].length; i++) {
 			neightboursNumber = this.getNeighboursNumber(j, i);
-			if (!this.isAlive(i, j)) {
-				switch(neightboursNumber) {
-					// case 0:
-					// case 1:
-					// case 2:
-						// this.cells[j][i] = this.cellState.DEAD;
-						// break;
-					case 3:
-						this.cells[j][i] = this.cellState.ALIVE;
-						break;
-					// case 4:
-					// case 5:
-					// case 6:
-					// case 7:
-					// case 8:
-						// this.cells[j][i] = this.cellState.DEAD;
-						// break;
+			if (this.cellsOld[j][i] === this.cellState.DYING) {
+				this.cells[j][i] = this.cellState.DEAD;
+			}
+			else if (this.cellsOld[j][i] === this.cellState.BIRTH) {
+				this.cells[j][i] = this.cellState.ALIVE;
+			}
+			
+			if (this.isAlive(i, j)) {
+				if (neightboursNumber < 2 || neightboursNumber > 3) {
+					this.cells[j][i] = this.cellState.DYING;
 				}
 			}
 			else {
-				switch(neightboursNumber) {
-					case 0:
-					case 1:
-						// this.cells[j][i] = this.cellState.DEAD;
-						// break;
-					// case 2:
-					// case 3:
-						// this.cells[j][i] = this.cellState.ALIVE;
-						// break;
-					case 4:
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-						this.cells[j][i] = this.cellState.DEAD;
-						break;
+				if (neightboursNumber === 3) {
+					this.cells[j][i] = this.cellState.BIRTH;
 				}
 			}
 		}
