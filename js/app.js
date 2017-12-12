@@ -69,7 +69,7 @@ Gol.prototype.draw = function draw() {
 	this.drawBoard();
 }
 
-Gol.prototype.clear = function draw() {
+Gol.prototype.clear = function clear() {
 	this.ctx.fillStyle = '#fff';
 	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 }
