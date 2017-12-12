@@ -2,7 +2,15 @@ var Gol = function(rowAndColNumber, cellSize, i) {
 	this.rowAndColNumber = rowAndColNumber;
 	this.cellSize = cellSize;
 	this.interval = i;
-	
+	this.cellSize = cellSize;
+	this.createCanvas();
+	this.ctx = this.canvas.getContext('2d');
+	this.width = this.canvas.width;
+	this.height = this.canvas.height;
+	this.init();
+}
+
+Gol.prototype.createCanvas = function createCanvas() {
 	var container = document.getElementById('container');
 	this.canvas = document.createElement('canvas');
 	this.canvas.setAttribute('width', this.rowAndColNumber * this.cellSize);
@@ -13,12 +21,6 @@ var Gol = function(rowAndColNumber, cellSize, i) {
 	this.canvas.style.left = '1px';
 	this.canvas.id = 'canvas';
 	container.appendChild(this.canvas);
-	
-	this.cellSize = cellSize;
-	this.ctx = this.canvas.getContext('2d');
-	this.width = this.canvas.width;
-	this.height = this.canvas.height;
-	this.init();
 }
 
 Gol.prototype.init = function init() {
@@ -50,6 +52,7 @@ Gol.prototype.initCells = function initCells() {
 		}
 	}
 }
+
 Gol.prototype.run = function run() {
 	var self = this;
 	this.draw();
